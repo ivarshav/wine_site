@@ -1,6 +1,7 @@
 import os
 
 import bcrypt
+import sqlalchemy
 from flask import abort, Flask, redirect, render_template, request, session, url_for
 from flask_login import LoginManager, login_required, login_user, logout_user
 from sqlalchemy import desc
@@ -121,8 +122,8 @@ def register():
         user = User.create(db_session, password=hashed_password, name=request.form.get('name'),
                            username=username,
                            email=request.form.get('email'))
-    except Exception as e:
-        session.rollback()
+    except sqlalchemy.exc.InvalidRequestError as e:
+        db_session.rollback()
         return e.message
     return 'User {} was successfully created!!'.format(user.username)
 
@@ -146,8 +147,8 @@ def login():
             return abort(403, 'Username and password does not match')
 
         login_user(user, remember=True)
-    except Exception as e:
-        session.rollback()
+    except sqlalchemy.exc.InvalidRequestError as e:
+        db_session.rollback()
         return e.message
     return redirect(url_for('hello_world'))
 
