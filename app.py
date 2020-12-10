@@ -1,12 +1,12 @@
 import os
 
 import bcrypt
-from flask import Flask, render_template, abort, request, redirect, url_for, session
-from flask_login import LoginManager, login_required, logout_user, login_user
+from flask import abort, Flask, redirect, render_template, request, session, url_for
+from flask_login import LoginManager, login_required, login_user, logout_user
 from sqlalchemy import desc
 
 from connect import connect, get_engine
-from models import Wines, User
+from models import User, Wines
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -107,20 +107,23 @@ def remove_from_cart():
 def register():
     if request.method == 'GET':
         return render_template('register.j2')
+    try:
+        username = request.form.get('username')
+        if username is None:
+            return abort(400, 'No username supplied')
+        user = db_session.query(User).filter_by(username=username).first()
+        if user:
+            return abort(403, 'Username {username} is already exists'.format(username=username))
 
-    username = request.form.get('username')
-    if username is None:
-        return abort(400, 'No username supplied')
-    user = db_session.query(User).filter_by(username=username).first()
-    if user:
-        return abort(403, 'Username {username} is already exists'.format(username=username))
-
-    salt = bcrypt.gensalt(prefix=b'2b', rounds=10)
-    unhashed_password = request.form['password'].encode('utf-8')
-    hashed_password = bcrypt.hashpw(unhashed_password, salt)
-    user = User.create(db_session, password=hashed_password, name=request.form.get('name'),
-                       username=username,
-                       email=request.form.get('email'))
+        salt = bcrypt.gensalt(prefix=b'2b', rounds=10)
+        unhashed_password = request.form['password'].encode('utf-8')
+        hashed_password = bcrypt.hashpw(unhashed_password, salt)
+        user = User.create(db_session, password=hashed_password, name=request.form.get('name'),
+                           username=username,
+                           email=request.form.get('email'))
+    except Exception as e:
+        session.rollback()
+        return e.message
     return 'User {} was successfully created!!'.format(user.username)
 
 
@@ -128,20 +131,24 @@ def register():
 def login():
     if request.method == 'GET':
         return render_template('login.j2')
-    username = request.form.get('username')
-    if username is None:
-        return abort(400, 'No username supplied')
-    user = db_session.query(User).filter_by(username=username).first()
-    if not user:
-        return abort(403, 'Username {username} does not exist'.format(username=username))
+    try:
+        username = request.form.get('username')
+        if username is None:
+            return abort(400, 'No username supplied')
+        user = db_session.query(User).filter_by(username=username).first()
+        if not user:
+            return abort(403, 'Username {username} does not exist'.format(username=username))
 
-    password = request.form['password'].encode('utf-8')
-    real_password = str(user.password).encode('utf-8')
+        password = request.form['password'].encode('utf-8')
+        real_password = str(user.password).encode('utf-8')
 
-    if not bcrypt.checkpw(password, real_password):
-        return abort(403, 'Username and password does not match')
+        if not bcrypt.checkpw(password, real_password):
+            return abort(403, 'Username and password does not match')
 
-    login_user(user, remember=True)
+        login_user(user, remember=True)
+    except Exception as e:
+        session.rollback()
+        return e.message
     return redirect(url_for('hello_world'))
 
 
