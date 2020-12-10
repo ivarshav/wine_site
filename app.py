@@ -115,7 +115,7 @@ def register():
             return abort(400, 'No username supplied')
         user = db_session.query(User).filter_by(username=username).first()
         if user:
-            return abort(403, 'Username {username} is already exists'.format(username=username))
+            return abort(403, 'Username {username} is already exists!'.format(username=username))
 
         salt = bcrypt.gensalt(prefix=b'2b', rounds=10)
         unhashed_password = request.form['password'].encode('utf-8')
@@ -124,7 +124,7 @@ def register():
                            username=username, email=request.form.get('email'))
     except sqlalchemy.exc.InvalidRequestError as e:
         db_session.rollback()
-        return e.message
+        return str(e)
     return 'User {} was successfully created!!'.format(user.username)
 
 
@@ -149,7 +149,7 @@ def login():
         login_user(user, remember=True)
     except sqlalchemy.exc.InvalidRequestError as e:
         db_session.rollback()
-        return e.message
+        return str(e)
     return redirect(url_for('hello_world'))
 
 
