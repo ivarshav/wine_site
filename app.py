@@ -1,3 +1,5 @@
+import os
+
 import bcrypt
 from flask import Flask, render_template, abort, request, redirect, url_for, session
 from flask_login import LoginManager, login_required, logout_user, login_user
@@ -5,7 +7,6 @@ from sqlalchemy import desc
 
 from connect import connect, get_engine
 from models import Wines, User
-from src.app.env_variables import SECRET_KEY
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -162,5 +163,5 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.config['SECRET_KEY'] = SECRET_KEY
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.run(threaded=True, port=5000)

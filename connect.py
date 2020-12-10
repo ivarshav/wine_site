@@ -1,12 +1,13 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.app.env_variables import URI
 from src.app.models import metadata
 
 
 def get_engine():
-    engine = create_engine(URI, echo=True)
+    engine = create_engine(os.getenv('DATABASE_URL'), echo=True)
     return engine
 
 
