@@ -1,0 +1,25 @@
+{% extends "base.j2" %}
+{% block title %}Registration{% endblock %}
+{% block content %}
+<form id="search-form" class="row" action="/register" method="POST">
+    <div class="col-auto">
+        <label for="name" class="visually-hidden">Name:</label>
+        <input type="text" name="name" id="name" placeholder="Name" tabindex=0 required>
+    </div>
+    <div class="col-auto">
+        <label for="username" class="visually-hidden">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Username" required>
+    </div>
+    <div class="col-auto">
+        <label for="password" class="visually-hidden">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+    </div>
+    <div class="col-auto">
+        <label for="email" class="visually-hidden">Mail:</label>
+        <input type="email" name="email" id="email" placeholder="Email" required>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class='btn btn-success'>Go!</button>
+    </div>
+</form>
+{% endblock %}

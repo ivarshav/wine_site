@@ -1,0 +1,37 @@
+{% extends "base.j2" %}
+{% block title %}Homepage{% endblock %}
+{% block content %}
+<h1>Search Your Wine</h1>
+
+<div id="search">
+    <form id="search-form" class="row" action="/wines" method="POST">
+        <div class="col-auto">
+            <label for="variety" class="visually-hidden">Variety</label>
+            <input class="form-control" type="text" id="variety" name="variety" placeholder="Variety"
+                   tabindex=0 autofocus>
+        </div>
+        <div class="col-auto">
+            <label for="points" class="visually-hidden">Points</label>
+            <input class="form-control" type="number" id="points" name="points" placeholder="Points">
+        </div>
+        <div class="col-auto">
+            <label for="price" class="visually-hidden">Price</label>
+            <input class="form-control" type="number" id="price" name="price" placeholder="Price">
+        </div>
+        <div class="col-auto">
+            <label for="country" class="visually-hidden">Country</label>
+            <input class="form-control" type="text" id="country" name="country" placeholder="Country">
+        </div>
+        <div class="col-auto">
+            <label for="winery" class="visually-hidden">Winery</label>
+            <input class="form-control" type="text" id="winery" name="winery" placeholder="Winery">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-success">Search</button>
+        </div>
+    </form>
+    {% if response %}
+    <div>{{response}}</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+html {
+    margin: 1em;
+    background: rgb(240 248 255 / 0.9);
+}
+
+body {
+    background: inherit;
+    margin: 3rem;
+}
+
+.result {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border: 1px solid;
+    border-radius: 3px;
+    border-color: gray;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 2em;
+}
+
+#footer {
+    text-align: center;
+}
+
+h1 {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#results {
+    margin: 0.5em;
+    padding: 1em;
+    display: grid;
+    gap: 2em;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+#description {
+    padding: 1em;
+}
+
+#cart-form {
+    padding-top: 1em;
+    justify-content: center;
+}
+
+#pay {
+    padding-top: 1em;
+    padding-left: 1em;
+}
+
+.row {
+    margin-top: 1rem;
+}
+
+.details {
+    font-size: 1.2em;
+}
+
+.property {
+    display: flex;
+}
+
+.col-auto {
+    margin-bottom: 0.5em;
+}

@@ -1,0 +1,21 @@
+{% extends "base.j2" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+{% if current_user.is_authenticated %}
+    <div>{{ current_user.username }} is already logged-in</div>
+{% else %}
+<form id="search-form" class="row" action="/login" method="POST">
+    <div class="col-auto">
+        <label for="username" class="visually-hidden">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Username" required>
+    </div>
+    <div class="col-auto">
+        <label for="password" class="visually-hidden">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class='btn btn-success'>Go!</button>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

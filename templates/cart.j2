@@ -1,0 +1,34 @@
+{% extends "base.j2" %}
+{% block title %}{{ title | title }}{% endblock %}
+{% block content %}
+{% if pay %}
+<h4 id="pay">Total to pay: {{pay}}</h4>
+{% endif %}
+<div id="results">
+    {% for item in results %}
+    <div class="result" data-result-id="1">
+        <div class="details">
+            <h2 class="property">{{item.variety}}</h2>
+            <div id="description" class="property">{{item.description}}</div>
+            <div id="points" class="property">Points: {{item.points}}</div>
+            <div id="price" class="property">Price: {{item.price}}</div>
+            <div id="winery" class="property">Winery: {{item.winery}}</div>
+            <div id="country" class="property">
+                <span>{{item.country}}</span>
+                <span>,&nbsp;{{item.province}}</span>
+                {% for region in item.regions %}
+                    <span>,&nbsp;{{region}}</span>
+                {% endfor %}
+            </div>
+            <hr>
+            <form id="cart-form" class="property" action="/cart/remove" method="POST">
+                <input name="wine_id" type="hidden" value="{{item.id}}"/>
+                <button class="btn btn-warning" type="submit">Remove from Cart!</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
