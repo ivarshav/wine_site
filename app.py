@@ -140,7 +140,7 @@ def login():
             return abort(403, 'Username {username} does not exist'.format(username=username))
 
         password = request.form['password'].encode('utf-8')
-        real_password = str(user.password).encode('utf-8').decode('utf8')
+        real_password = str(user.password).encode('utf-8')
 
         if not bcrypt.checkpw(password, real_password):
             return abort(403, 'Username and password does not match')
