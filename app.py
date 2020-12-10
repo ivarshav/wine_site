@@ -118,10 +118,9 @@ def register():
 
         salt = bcrypt.gensalt(prefix=b'2b', rounds=10)
         unhashed_password = request.form['password'].encode('utf-8')
-        hashed_password = bcrypt.hashpw(unhashed_password, salt)
+        hashed_password = bcrypt.hashpw(unhashed_password, salt).decode('utf8')
         user = User.create(db_session, password=hashed_password, name=request.form.get('name'),
-                           username=username,
-                           email=request.form.get('email'))
+                           username=username, email=request.form.get('email'))
     except sqlalchemy.exc.InvalidRequestError as e:
         db_session.rollback()
         return e.message
@@ -141,7 +140,7 @@ def login():
             return abort(403, 'Username {username} does not exist'.format(username=username))
 
         password = request.form['password'].encode('utf-8')
-        real_password = str(user.password).encode('utf-8')
+        real_password = str(user.password).encode('utf-8').decode('utf8')
 
         if not bcrypt.checkpw(password, real_password):
             return abort(403, 'Username and password does not match')
