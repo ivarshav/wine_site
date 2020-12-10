@@ -3,7 +3,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.app.models import metadata
+from models import metadata
 
 
 def get_engine():
