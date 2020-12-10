@@ -11,6 +11,7 @@ from models import User, Wines
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ITSSECRET')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -170,5 +171,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ITSSECRET')
     app.run(threaded=True, port=5000)
