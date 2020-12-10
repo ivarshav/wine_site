@@ -163,5 +163,5 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'ITSSECRET')
     app.run(threaded=True, port=5000)
